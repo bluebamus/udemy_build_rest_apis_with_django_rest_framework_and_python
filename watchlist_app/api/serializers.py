@@ -4,7 +4,7 @@ from watchlist_app.models import WatchList, StreamPlatform, Review
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    review_user = serializers.StringRelatedField(read_only=True)
+    # review_user = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Review
@@ -13,7 +13,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class WatchListSerializer(serializers.ModelSerializer):
-    # reviews = ReviewSerializer(many=True, read_only=True)
+    reviews = ReviewSerializer(many=True, read_only=True)
     platform = serializers.CharField(source="platform.name")
 
     class Meta:
@@ -22,11 +22,33 @@ class WatchListSerializer(serializers.ModelSerializer):
 
 
 class StreamPlatformSerializer(serializers.ModelSerializer):
+    # class StreamPlatformSerializer(serializers.HyperlinkedModelSerializer):
     watchlist = WatchListSerializer(many=True, read_only=True)
+    # watchlist1 = serializers.StringRelatedField(
+    #     many=True,
+    #     source="watchlist",
+    # )
+    # watchlist2 = serializers.PrimaryKeyRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     source="watchlist",
+    # )
+    # watchlist3 = serializers.HyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     view_name="movie-details",
+    #     source="watchlist",
+    # )
 
     class Meta:
         model = StreamPlatform
         fields = "__all__"
+
+        # extra_kwargs = {
+        #     "url": {
+        #         "view_name": "stream-detail"
+        #     },  # Replace 'custom-model-detail' with your desired view name
+        # }
 
 
 # def name_length(value):
